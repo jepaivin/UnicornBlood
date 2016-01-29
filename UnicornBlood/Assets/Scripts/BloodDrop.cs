@@ -3,10 +3,10 @@ using System.Collections;
 
 public class BloodDrop : MonoBehaviour {
 
-	public static float MaxMove = 1;
+	public static float MaxMove = 2;
 	public float MoveLeft;
 	public float MoveMultiplier = 1;
-	public bool Smeared = false;
+	public bool TrailMode = false;
 
 
 	private SpriteRenderer spriteRenderer;
