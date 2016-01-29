@@ -7,8 +7,10 @@ public class PaintController : MonoBehaviour
 	public float CaptureOuterRadius = 40;
 	public float DragSpeed = 1;
 	public bool TestMode;
-	private  List<GameObject>  BloodDrops = new List<GameObject> ();
-	private List<GameObject> CurrentDragDrops = new  List<GameObject> ();
+	public bool ContinuousCapture = true;
+	public bool PlacingSplat = false;
+
+	private List<BloodDrop> CurrentDragDrops = new  List<BloodDrop> ();
 	private List<float> CurrentDragWeights = new List<float>();
 	private List<float> DragStartTime = new List<float> ();
 
@@ -19,13 +21,46 @@ public class PaintController : MonoBehaviour
 	
 	}
 	
-    void FindBloodDrops()
+    List<BloodDrop> FindBloodDrops()
     {
-		BloodDrops = GameObject.FindGameObjectsWithTag ("BloodDrop").ToList ();
+		return GameObject.FindGameObjectsWithTag ("BloodDrop").Select (x => x.GetComponent<BloodDrop>()).ToList ();
     }
 
 	Vector3 previousMousePosition;
 
+	void StartDragging(Vector3 mousePosition)
+	{
+
+		var drops = FindBloodDrops();
+		
+		CurrentDragDrops = new List<BloodDrop>();
+		CurrentDragWeights = new List<float>();
+		
+		foreach(var obj in drops)
+		{
+			Vector2 a = obj.transform.position;
+			Vector2 b = mousePosition;
+			var d = (a - b).magnitude;
+			float dragWeight = 0;
+			
+			if (d < CaptureInnerRadius)
+			{
+				dragWeight = 1;
+			}
+			else if (d < CaptureOuterRadius)
+			{
+				dragWeight = (d - CaptureInnerRadius) / (CaptureOuterRadius - CaptureInnerRadius);
+			}
+			
+			if (dragWeight > 0)
+			{
+				CurrentDragDrops.Add (obj);
+				CurrentDragWeights.Add (dragWeight);
+			}
+			
+		}
+		previousMousePosition = mousePosition;
+	}
 	// Update is called once per frame
 	void Update () 
     {
@@ -41,36 +76,7 @@ public class PaintController : MonoBehaviour
 
 		if (Input.GetMouseButtonDown (0))
 		{
-			FindBloodDrops();
-			CurrentDragDrops = new List<GameObject>();
-			CurrentDragWeights = new List<float>();
-
-			foreach(var obj in BloodDrops)
-			{
-				Vector2 a = obj.transform.position;
-				Vector2 b = mousePosition;
-				var d = (a - b).magnitude;
-				float dragWeight = 0;
-
-				if (d < CaptureInnerRadius)
-				{
-					dragWeight = 1;
-				}
-				else if (d < CaptureOuterRadius)
-				{
-					dragWeight = (d - CaptureInnerRadius) / (CaptureOuterRadius - CaptureInnerRadius);
-				}
-
-				if (dragWeight > 0)
-				{
-					CurrentDragDrops.Add (obj);
-					CurrentDragWeights.Add (dragWeight);
-				}
-				Debug.Log ("Compare " + obj.transform.position   + " to " + mousePosition + " D="+d + " W="+dragWeight);
-
-			}
-			previousMousePosition = mousePosition;
-			Debug.Log ("Drag drop count " +CurrentDragDrops.Count);
+			StartDragging(mousePosition);
 		}
 
 		if (Input.GetMouseButtonUp (0))
@@ -81,14 +87,18 @@ public class PaintController : MonoBehaviour
 
 		if (Input.GetMouseButton (0) && CurrentDragDrops != null)
 		{
-			Vector3 scroll = mousePosition - previousMousePosition;
+			Vector3 scroll = (mousePosition - previousMousePosition)*DragSpeed;
 			for(int i = 0; i < CurrentDragDrops.Count; i++)
 			{
 				var drop = CurrentDragDrops[i];
-				Vector3 newPosition = scroll * CurrentDragWeights[i] * DragSpeed;
-				drop.transform.position =  drop.transform.position + newPosition;
+				Vector3 moveVector = scroll * CurrentDragWeights[i];
+				drop.Move(moveVector);
 			}
 			previousMousePosition = mousePosition;
+			if (ContinuousCapture && !PlacingSplat)
+			{
+				StartDragging(mousePosition);
+			}
 		}
 
 	}
