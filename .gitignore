@@ -1,2 +1,5 @@
 UnicornBlood/Library
 UnicornBlood/Temp
+*.csproj
+*.sln
+*.userprefs
