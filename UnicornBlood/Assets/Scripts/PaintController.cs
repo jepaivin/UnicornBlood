@@ -7,9 +7,11 @@ public class PaintController : MonoBehaviour
 	public float CaptureOuterRadius = 40;
 	public float DragSpeed = 1;
 	public bool TestMode;
-	private  List<GameObject>  BloodDrops;
-	private List<GameObject> CurrentDragDrops;
-	private List<float> CurrentDragWeights;
+	private  List<GameObject>  BloodDrops = new List<GameObject> ();
+	private List<GameObject> CurrentDragDrops = new  List<GameObject> ();
+	private List<float> CurrentDragWeights = new List<float>();
+	private List<float> DragStartTime = new List<float> ();
+
 
 	// Use this for initialization
 	void Start () 
@@ -27,6 +29,12 @@ public class PaintController : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
+
+		if (Input.GetKeyUp (KeyCode.Space)) 
+		{
+			Application.LoadLevel(Application.loadedLevelName);
+			return;
+		}
 		float mouseX = Input.mousePosition.x;
 		float mouseY = Input.mousePosition.y;
 		var mousePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
@@ -39,8 +47,9 @@ public class PaintController : MonoBehaviour
 
 			foreach(var obj in BloodDrops)
 			{
-				var d = (obj.transform.position  - mousePosition).magnitude;
-				Debug.Log ("Compare " + obj.transform.position   + " to " + mousePosition);
+				Vector2 a = obj.transform.position;
+				Vector2 b = mousePosition;
+				var d = (a - b).magnitude;
 				float dragWeight = 0;
 
 				if (d < CaptureInnerRadius)
@@ -57,6 +66,8 @@ public class PaintController : MonoBehaviour
 					CurrentDragDrops.Add (obj);
 					CurrentDragWeights.Add (dragWeight);
 				}
+				Debug.Log ("Compare " + obj.transform.position   + " to " + mousePosition + " D="+d + " W="+dragWeight);
+
 			}
 			previousMousePosition = mousePosition;
 			Debug.Log ("Drag drop count " +CurrentDragDrops.Count);
@@ -68,16 +79,16 @@ public class PaintController : MonoBehaviour
 			CurrentDragWeights.Clear ();
 		}
 
-		if (Input.GetMouseButton (0))
+		if (Input.GetMouseButton (0) && CurrentDragDrops != null)
 		{
 			Vector3 scroll = mousePosition - previousMousePosition;
-			Debug.Log ("SD " + scroll);
 			for(int i = 0; i < CurrentDragDrops.Count; i++)
 			{
 				var drop = CurrentDragDrops[i];
 				Vector3 newPosition = scroll * CurrentDragWeights[i] * DragSpeed;
-				drop.transform.position =  drop.transform.position + scroll;
+				drop.transform.position =  drop.transform.position + newPosition;
 			}
+			previousMousePosition = mousePosition;
 		}
 
 	}
