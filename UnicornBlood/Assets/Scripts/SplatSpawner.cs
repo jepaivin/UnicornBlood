@@ -22,7 +22,6 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 
 	public void OnBeginDrag()
 	{
-		Debug.Log ("Begin");
 		GameObject.FindObjectOfType<PaintController> ().PlacingSplat = true;
 		CurrentSplat = GameObject.Instantiate (SplatPrefab) as GameObject;
 		CurrentSplat.transform.parent = GameObject.Find ("BloodContainer").transform;

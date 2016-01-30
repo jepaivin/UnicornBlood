@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
 	public List<GameObject> Symbols;
 	public List<GameObject> Animals;
 	public Text PromptText;
+	public GameObject CheckMarkPrefab;
 	// Use this for initialization
 	
 	void Awake()
@@ -65,18 +66,20 @@ public class GameController : MonoBehaviour
 
 	void CheckScore()
 	{
-		int samplesPerSegment = 20;
+		int samplesPerSegment = 12;
 		int totalSamples = 0;
 		var symbol = GameObject.FindObjectOfType<Symbol> ();
 		BloodDrop[] bloodDropObjects = GameObject.FindObjectsOfType<BloodDrop> ();
 		Vector2[] bloodDrops = bloodDropObjects.Select(x => new Vector2(x.transform.position.x, x.transform.position.y)).ToArray();
 		Debug.Log ("Checking " + bloodDrops.Length + " drops vs " + symbol.Points.Count + " segments");
-		List<Vector2> checkPoints = new List<Vector2> ();
 
+		List<Vector2> checkPoints = new List<Vector2> ();
+		List<bool> CheckPointStatus = new List<bool> ();
 		for (int i = 0; i < symbol.Points.Count; i++) {
 			Vector2 a = (Vector2)symbol.Points [i].transform.position;
 			Vector2 b = (Vector2)symbol.Points [(i + 1) % symbol.Points.Count].transform.position;
-			for (int j = 0; j < samplesPerSegment; j++) {
+			for (int j = 0; j < samplesPerSegment; j++) 
+			{
 				Vector2 point = Vector2.Lerp (a, b, (float)j / samplesPerSegment);
 				checkPoints.Add (point);
 				Debug.DrawLine (new Vector3(point.x,point.y,0), new Vector3(point.x+0.1f, point.y, 0));
@@ -93,18 +96,49 @@ public class GameController : MonoBehaviour
 			{
 				if (Vector2.SqrMagnitude(bloodDrops[i] - checkPoints[j]) < THRESHOLD)
 				{
-					bloodDropObjects[i].GetComponent<SpriteRenderer>().color = Color.white;
-					bloodDropObjects[i].GetComponent<SpriteRenderer>().sortingOrder = 4000;
+//					bloodDropObjects[i].GetComponent<SpriteRenderer>().color = Color.white;
+//					bloodDropObjects[i].GetComponent<SpriteRenderer>().sortingOrder = 4000;
 					found = true;
 					break;
 				}
 			}
-			if (found)
-				checkPointsFilled++;
-
+			CheckPointStatus.Add (found);
+			if (found)checkPointsFilled++;
 		}
+		StopAllCoroutines ();
 		float percentage = (checkPointsFilled / (float)checkPoints.Count * 100.0f);
 		ShowPrompt (percentage + " % COMPLETE");
-		Debug.Log (percentage);
+        
+        StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
 	}
+
+	private IEnumerator ShowResult(List<Vector2> pts, List<bool> status)
+	{
+			List<GameObject> created = new List<GameObject> ();
+		for (int i = 0; i < pts.Count; i++) {
+			var go = GameObject.Instantiate(CheckMarkPrefab) as GameObject;
+			go.transform.parent = transform;
+			go.transform.position = new Vector3(pts[i].x, pts[i].y, 1);
+			if (status[i])
+			{
+				go.GetComponent<SpriteRenderer>().color = Color.yellow;
+			}
+			else
+			{
+				go.GetComponent<SpriteRenderer>().color = Color.blue;
+			}
+			created.Add (go);
+			if (i%2==0)
+				yield return null;
+		}
+        
+        yield return new WaitForSeconds (2);
+		for (int i = 0; i < created.Count; i++) {
+			GameObject.Destroy(created[i]);
+			if (i%2==0)
+				yield return null;
+        }
+        
+        
+    }
 }
