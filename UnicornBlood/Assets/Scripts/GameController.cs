@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
 	public Text TimeText;
 
 
-	private float TurnTime = 5;
+	private float TurnTime = 15;
 	private float TurnStartTime;
 	public bool TurnActive = false;
 

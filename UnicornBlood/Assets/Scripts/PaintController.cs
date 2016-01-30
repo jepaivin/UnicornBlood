@@ -18,10 +18,7 @@ public class PaintController : MonoBehaviour
 	// Use this for initialization
 	void Start () 
 	{
-#if UNITY_IPHONE
-		DragSpeed = 0.5f;
-#endif
-	
+
 	}
 	
     List<BloodDrop> FindBloodDrops()
