@@ -18,7 +18,7 @@ public class BloodDrop : MonoBehaviour {
 		MoveLeft = MaxMove * MoveMultiplier;
 		spriteRenderer = GetComponent<SpriteRenderer> ();
 		startColor = spriteRenderer.color;
-		endColor = Color.Lerp (spriteRenderer.color, Color.black, 0.25f);
+		endColor = Color.Lerp (spriteRenderer.color, Color.black, 0.25f * MoveMultiplier);
 	}
 	
 	// Update is called once per frame

@@ -24,9 +24,10 @@ public class BloodDropContainer : MonoBehaviour
 				Vector3 rndDirection = new Vector3( Random.Range(-CopySpread, CopySpread), Random.Range(-CopySpread, CopySpread), 0.0f );
 
 				copy.transform.position = drops[j].gameObject.transform.position + rndDirection;
-
 				var drop =  copy.GetComponent<BloodDrop>();
 				drop.MoveMultiplier = multiplier;
+				copy.GetComponent<SpriteRenderer>().sortingOrder+=i;
+
 			}
 		}
 	
