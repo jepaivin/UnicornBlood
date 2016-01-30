@@ -11,7 +11,8 @@ public class GameOverController : MonoBehaviour
 	{
 		int year = DateTime.Now.Year + Mathf.FloorToInt (score);
 		int month = DateTime.Now.Month + Mathf.FloorToInt ((score - Mathf.FloorToInt (score)) * 12);
-		if (month > 12) {
+		if (month > 12)
+		{
 			year++;
 			month-=12;
 		}

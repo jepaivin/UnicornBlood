@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
 	public int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
+	private float InitialTurnTime = 15;
+	private float MinTurnTime = 5;
 
 	private float TurnTime = 15;
 	private float TurnStartTime;
@@ -46,7 +48,7 @@ public class GameController : MonoBehaviour
 		Score = 0.0f;
 		ShowScore (Score);
 		ScorePanel.gameObject.SetActive (false);
-
+		TurnTime = InitialTurnTime  + 1; // decrease per turn, hence +1
 		StartNewTurn ();
 	}
 
@@ -60,6 +62,9 @@ public class GameController : MonoBehaviour
 		yield return null;	
 		while (ScorePanel.gameObject.activeSelf) {
 			yield return null;
+		}
+		if (TurnTime > MinTurnTime) {
+			TurnTime--;
 		}
 		ClearAnimals ();
 		FindObjectOfType<PaintController> ().Clear ();
