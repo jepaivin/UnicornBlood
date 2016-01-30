@@ -18,7 +18,6 @@ public class GameController : MonoBehaviour
 
 	public void StartGame () 
 	{
-	
 		ShowPrompt("GAME STARTING");
 	}
 
