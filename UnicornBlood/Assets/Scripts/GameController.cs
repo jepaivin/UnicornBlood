@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
 	private GameObject CurrentSymbol;
 	private float Score = 0.0f;
 
+	public List<String> FunFacts = new List<String>();
+	public GameObject funFactText;
 
 	// Use this for initialization
 	

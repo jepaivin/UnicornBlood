@@ -47,11 +47,35 @@ public class ScorePanelController : MonoBehaviour
 		}
 		yield return new WaitForSeconds (1.0f);
 
-		if (completion > 0.5f) {
+		if (completion > 0.9f) {
+			Gods.text = "Gods are ecstatic";
+		} else
+		if (completion > 0.8f) {
+			Gods.text = "Gods are happy";
+		} else
+		if (completion > 0.7f) {
 			Gods.text = "Gods are pleased";
 		} else
+		if (completion > 0.6f) {
+			Gods.text = "Gods are satisfied";
+		} else
+		if (completion > 0.5f) {
+			Gods.text = "Gods are contended";
+		} else
+		if (completion > 0.4f) {
+			Gods.text = "Gods are displeased - Life lost!";
+		} else
+		if (completion > 0.3f) {
+			Gods.text = "Gods are annoyed - Life lost!";
+		} else
+		if (completion > 0.2f) {
+			Gods.text = "Gods are angry - Life lost!";
+		} else
+		if (completion > 0.1f) {
+			Gods.text = "Gods are enraged - Life lost!";
+		} else
 		{
-			Gods.text = "Gods are indifferent";
+			Gods.text = "Gods are wrathful - Life lost!";
 		}
 		yield return new WaitForSeconds (1.0f);
 
