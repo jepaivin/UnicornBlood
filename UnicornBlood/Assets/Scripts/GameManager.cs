@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -22,6 +23,11 @@ public class GameManager : MonoBehaviour
 		gameOver.SetActive (false);
 
 		menu.SetActive (true);
+		
+		GameObject FunFactoid = game.GetComponent<GameController> ().funFactText;
+		int numberOfFacts = game.GetComponent<GameController> ().FunFacts.Count;
+		FunFactoid.GetComponent<Text> ().text = game.GetComponent<GameController> ().FunFacts[(int)Random.Range (0, numberOfFacts)];
+
 	}
 	
 
