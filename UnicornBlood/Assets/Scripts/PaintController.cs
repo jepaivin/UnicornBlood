@@ -64,9 +64,12 @@ public class PaintController : MonoBehaviour
 	
 	public void Clear()
 	{
+
 		for (int i = 0; i < transform.childCount; i++)
 		{
-			GameObject.Destroy(transform.GetChild(i).gameObject);
+			GameObject obj = transform.GetChild(i).gameObject;
+			obj.SetActive(false);
+			GameObject.Destroy(obj);
 		}
 	}
 

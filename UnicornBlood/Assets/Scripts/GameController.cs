@@ -42,11 +42,27 @@ public class GameController : MonoBehaviour
 
 	void StartNewTurn()
 	{
+		StartCoroutine (StartNewTurnAsync ());
+	}
+
+	IEnumerator StartNewTurnAsync()
+	{
+		yield return null;	
+		ClearAnimals ();
+		FindObjectOfType<PaintController> ().Clear ();
+
+		yield return new WaitForSeconds(0.1f);
 		SpawnSymbol ();
-		SpawnAnimals ();
+		yield return new WaitForSeconds(0.1f);
+
+		for (int i = 0; i < 4; i++) {
+			SpawnAnimal (i);
+			yield return new WaitForSeconds(0.1f);
+		}
+		yield return new WaitForSeconds(0.1f);
 		TurnStartTime = Time.realtimeSinceStartup;
 		TurnActive = true;
-		FindObjectOfType<PaintController> ().Clear ();
+
 	}
 
 	void SpawnSymbol()
@@ -60,27 +76,29 @@ public class GameController : MonoBehaviour
 		CurrentSymbol.transform.parent = transform;
 	}
 		
-	void SpawnAnimals()
+	void ClearAnimals()
 	{
 		var canvas = GetComponentInChildren<Canvas> ();
 		foreach(var go in AnimalInstances)
 		{
 			GameObject.Destroy(go);
 		}
-
+		
 		AnimalInstances.Clear ();
+	}
 
-		for (int i = 0; i < 4; i++)
-		{
-			int index = UnityEngine.Random.Range(0, Animals.Count);
+	void SpawnAnimal(int i)
+	{
+		var canvas = GetComponentInChildren<Canvas> ();
 
-			var animal = GameObject.Instantiate(Animals[index]) as GameObject;
-			animal.transform.parent = canvas.transform;
-			animal.GetComponent<RectTransform>().localPosition = new Vector3(i*130-200,-300,0);
-			animal.GetComponent<RectTransform>().localScale = Vector3.one;
+		int index = UnityEngine.Random.Range(0, Animals.Count);
 
-			AnimalInstances.Add(animal);
-		}
+		var animal = GameObject.Instantiate(Animals[index]) as GameObject;
+		animal.transform.parent = canvas.transform;
+		animal.GetComponent<RectTransform>().localPosition = new Vector3(i*130-200,-300,0);
+		animal.GetComponent<RectTransform>().localScale = Vector3.one;
+
+		AnimalInstances.Add(animal);
 	}
 
 	void ShowPrompt(string text)
