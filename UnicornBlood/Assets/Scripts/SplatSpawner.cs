@@ -44,9 +44,11 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	{
 		if (used)
 			return;
-		if (!FindObjectOfType<GameController> ().TurnActive)
-			return;
+		var gameController = FindObjectOfType<GameController> ();
 
+		if (!gameController.TurnActive)
+			return;
+		gameController.AnimalsUsed++;
 		used = true;
 		faded = false;
 		GameObject.FindObjectOfType<PaintController> ().PlacingSplat = true;

@@ -12,7 +12,9 @@ public class GameController : MonoBehaviour
 	public Text PromptText;
 	public Text ScoreText;
 	public Text TimeText;
+	public int AnimalsUsed = 0;
 
+	public ScorePanelController ScorePanel;
 
 	private float TurnTime = 15;
 	private float TurnStartTime;
@@ -36,6 +38,7 @@ public class GameController : MonoBehaviour
 		ShowPrompt("GAME STARTING");
 		Score = 0.0f;
 		ShowScore (Score);
+		ScorePanel.gameObject.SetActive (false);
 
 		StartNewTurn ();
 	}
@@ -48,6 +51,9 @@ public class GameController : MonoBehaviour
 	IEnumerator StartNewTurnAsync()
 	{
 		yield return null;	
+		while (ScorePanel.gameObject.activeSelf) {
+			yield return null;
+		}
 		ClearAnimals ();
 		FindObjectOfType<PaintController> ().Clear ();
 
@@ -62,6 +68,7 @@ public class GameController : MonoBehaviour
 		yield return new WaitForSeconds(0.1f);
 		TurnStartTime = Time.realtimeSinceStartup;
 		TurnActive = true;
+		AnimalsUsed = 0;
 
 	}
 
@@ -217,7 +224,9 @@ public class GameController : MonoBehaviour
         
         StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
 		Score += percentage / 100.0f;
+
 		ShowScore (Score);
+		ScorePanel.ShowScore (percentage/100.0f, 0.1f, (4 - AnimalsUsed) * 0.1f, 2);
 
 	}
 

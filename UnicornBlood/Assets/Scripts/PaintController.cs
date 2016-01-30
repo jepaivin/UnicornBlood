@@ -61,10 +61,9 @@ public class PaintController : MonoBehaviour
 		}
 		previousMousePosition = mousePosition;
 	}
-	
+
 	public void Clear()
 	{
-
 		for (int i = 0; i < transform.childCount; i++)
 		{
 			GameObject obj = transform.GetChild(i).gameObject;
