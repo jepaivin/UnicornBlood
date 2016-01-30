@@ -13,6 +13,7 @@ public class ScorePanelController : MonoBehaviour
 	public Text Gods;
 
 	public Text Push;
+	public Image Background;
 
 	void Clear()
 	{
@@ -26,6 +27,8 @@ public class ScorePanelController : MonoBehaviour
 	public void ShowScore(float completion, float accuracy, float economy, int pushBack)
 	{
 		Clear ();
+		Background.color = Color.clear;
+
 		gameObject.SetActive (true);
 		StartCoroutine(ShowScoreAsync(completion, accuracy, economy, pushBack));
 
@@ -33,10 +36,12 @@ public class ScorePanelController : MonoBehaviour
 
 	IEnumerator ShowScoreAsync(float completion, float accuracy, float economy, int pushBack)
 	{
+		yield return new WaitForSeconds (2.0f);
+		Background.color = Color.black;
 		Completion.text = "Completion: " + (int)(completion * 100) + " %";
 		yield return new WaitForSeconds (1.0f);
-		Accuracy.text = "Accuracy: " + (int)(accuracy * 100) + " %";
-		yield return new WaitForSeconds (1.0f);
+		/*Accuracy.text = "Accuracy: " + (int)(accuracy * 100) + " %";
+		yield return new WaitForSeconds (1.0f);*/
 		if (economy > 0) {
 			Economy.text = "Economy Bonus: " + (int)(economy * 100) + " %";
 		}
@@ -50,18 +55,9 @@ public class ScorePanelController : MonoBehaviour
 		}
 		yield return new WaitForSeconds (1.0f);
 
-		Push.text = "Armageddon pushed back 2 days";
+		Push.text = "Armageddon pushed back " + pushBack + " days";
+
 		yield return new WaitForSeconds (1.0f);
 		gameObject.SetActive (false);
-	}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

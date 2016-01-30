@@ -188,8 +188,7 @@ public class GameController : MonoBehaviour
 			Vector2 a = (Vector2)symbol.Points [i].transform.position;
 			Vector2 b = (Vector2)symbol.Points [(i + 1) % symbol.Points.Count].transform.position;
 		
-			int samplesPerSegment =  Mathf.Max (3, (int)((b - a).magnitude / 10.0f));
-
+			int samplesPerSegment =  Mathf.Max (2, (int)((b - a).magnitude*2.0f));
 		
 			for (int j = 0; j < samplesPerSegment; j++) 
 			{
@@ -220,13 +219,15 @@ public class GameController : MonoBehaviour
 		}
 		StopAllCoroutines ();
 		float percentage = (checkPointsFilled / (float)checkPoints.Count * 100.0f);
-		ShowPrompt ((int)percentage + " % COMPLETE");
+		ShowPrompt ((int)percentage + " %");// COMPLETE");
         
         StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
+		float totalScore = percentage / 100.0f + (4 - AnimalsUsed) * 0.1f;
+
 		Score += percentage / 100.0f;
 
 		ShowScore (Score);
-		ScorePanel.ShowScore (percentage/100.0f, 0.1f, (4 - AnimalsUsed) * 0.1f, 2);
+		ScorePanel.ShowScore (percentage/100.0f, 0.1f, (4 - AnimalsUsed) * 0.1f, (int)(totalScore*365.0f));
 
 	}
 

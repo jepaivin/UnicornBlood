@@ -70,7 +70,7 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	public void OnDrag()
 	{
 		float mult = 0.01f;
-if (!Application.isEditor)
+		if (!Application.isEditor)
 			mult = 0.005f;
 
 		var delta = (Input.mousePosition - lastPosition) * mult;
