@@ -118,6 +118,7 @@ public class GameController : MonoBehaviour
 	void ShowPrompt(string text)
 	{
 		StopAllCoroutines ();
+		PromptText.text = "";
 		StartCoroutine (ShowPromptAsync (text));
 	}
 
@@ -295,7 +296,7 @@ public class GameController : MonoBehaviour
 			if (i%2==0)
 				yield return null;
         }
-        
+		PromptText.text = "";
 		StartNewTurn ();
     }
 }

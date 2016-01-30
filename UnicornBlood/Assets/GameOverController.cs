@@ -15,7 +15,7 @@ public class GameOverController : MonoBehaviour
 			year++;
 			month-=12;
 		}
-		ScoreText.text = "Armageddon pushed back to " + MONTHS[month] + "/" + year;
+		ScoreText.text = "Armageddon pushed back to " + MONTHS[month] + " " + year;
 
 	}
 
