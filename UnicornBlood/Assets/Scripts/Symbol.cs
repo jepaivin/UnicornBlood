@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 
 [ExecuteInEditMode]
+
 public class Symbol : MonoBehaviour 
 {
-	public List<GameObject> Points;
+	[System.Serializable]
+	public struct PointList
+	{
+		public List<GameObject> Points;
+	}	
+	public List<PointList> Polygons;
 
 	// Use this for initialization
 	void Start () {
@@ -14,12 +20,15 @@ public class Symbol : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-		if (!Application.isPlaying) {
+		if (!Application.isPlaying && Polygons != null) {
 		
-			for (int i = 0; i < Points.Count; i++)
+			for (int i = 0; i < Polygons.Count; i++)
 			{
-				int j = (i+1)%Points.Count;
-				Debug.DrawLine(Points[i].transform.position, Points[j].transform.position);
+				var poly = Polygons[i];
+				for (int j= 0; j < poly.Points.Count-1; j++)
+				{
+					Debug.DrawLine(poly.Points[j].transform.position, poly.Points[j+1].transform.position);
+				}
 			}
 		}
 	}

@@ -31,6 +31,7 @@ public class GameController : MonoBehaviour
 	public List<String> FunFacts = new List<String>();
 	public GameObject funFactText;
 
+	public List<GameObject> LifeHorns;
 
 	// Use this for initialization
 	
@@ -193,33 +194,38 @@ public class GameController : MonoBehaviour
 		var symbol = GameObject.FindObjectOfType<Symbol> ();
 		BloodDrop[] bloodDropObjects = GameObject.FindObjectsOfType<BloodDrop> ();
 		Vector2[] bloodDrops = bloodDropObjects.Select(x => new Vector2(x.transform.position.x, x.transform.position.y)).ToArray();
-		Debug.Log ("Checking " + bloodDrops.Length + " drops vs " + symbol.Points.Count + " segments");
 
 		List<Vector2> checkPoints = new List<Vector2> ();
 		List<bool> CheckPointStatus = new List<bool> ();
-		for (int i = 0; i < symbol.Points.Count; i++) {
-			Vector2 a = (Vector2)symbol.Points [i].transform.position;
-			Vector2 b = (Vector2)symbol.Points [(i + 1) % symbol.Points.Count].transform.position;
-		
-			int samplesPerSegment =  Mathf.Max (2, (int)((b - a).magnitude*2.0f));
-		
-			for (int j = 0; j < samplesPerSegment; j++) 
+		for (int i = 0; i < symbol.Polygons.Count; i++)
+		{
+			var poly = symbol.Polygons[i];
+			for (int j= 0; j < poly.Points.Count-1; j++)
 			{
-				Vector2 point = Vector2.Lerp (a, b, (float)j / samplesPerSegment);
-				checkPoints.Add (point);
-				Debug.DrawLine (new Vector3(point.x,point.y,0), new Vector3(point.x+0.1f, point.y, 0));
-
+				Vector2 a = (Vector2)poly.Points[j].transform.position;
+				Vector2 b = (Vector2)poly.Points[j+1].transform.position;
+			
+				int samplesPerSegment =  Mathf.Max (2, (int)((b - a).magnitude*2.0f));
+			
+				for (int k = 0; k < samplesPerSegment; k++) 
+				{
+					Vector2 point = Vector2.Lerp (a, b, (float)k / samplesPerSegment);
+					checkPoints.Add (point);
+					Debug.DrawLine (new Vector3(point.x,point.y,0), new Vector3(point.x+0.1f, point.y, 0));
+				}
 			}
 		}
-		float THRESHOLD = 0.15f;
+		Debug.Log ("Checking " + bloodDrops.Length + " drops vs " + checkPoints.Count + " checkpoints");
+        
+        float THRESHOLD = 0.15f;
 		int checkPointsFilled = 0;
 		bool found = false;
 		for (int j = 0; j < checkPoints.Count; j++)
 		{
 			found = false;
-			for (int i = 0; i < bloodDrops.Length; i++)
+			for (int di = 0; di < bloodDrops.Length; di++)
 			{
-				if (Vector2.SqrMagnitude(bloodDrops[i] - checkPoints[j]) < THRESHOLD)
+				if (Vector2.SqrMagnitude(bloodDrops[di] - checkPoints[j]) < THRESHOLD)
 				{
 //					bloodDropObjects[i].GetComponent<SpriteRenderer>().color = Color.white;
 //					bloodDropObjects[i].GetComponent<SpriteRenderer>().sortingOrder = 4000;
@@ -247,9 +253,11 @@ public class GameController : MonoBehaviour
 	public void LoseLife()
 	{
 		LivesLeft--;
-		LivesText.text = "";
-		for (int i = 0; i < LivesLeft; i++)
-			LivesText.text += "<3 ";
+		for (int i = 0; i < 3; i++) 
+		{
+			LifeHorns[i].SetActive(i < LivesLeft);
+		
+		}
 		if (LivesLeft == 0) 
 		{
 			ShowGameOver();
