@@ -14,13 +14,13 @@ public class GameController : MonoBehaviour
 	public Text TimeText;
 
 
-	private float TurnTime = 15;
+	private float TurnTime = 5;
 	private float TurnStartTime;
-	private bool TurnActive = false;
+	public bool TurnActive = false;
 
 	public GameObject CheckMarkPrefab;
 	private List<GameObject> AnimalInstances = new List<GameObject>();
-
+	private GameObject CurrentSymbol;
 	private float Score = 0.0f;
 
 
@@ -42,12 +42,23 @@ public class GameController : MonoBehaviour
 
 	void StartNewTurn()
 	{
+		SpawnSymbol ();
 		SpawnAnimals ();
 		TurnStartTime = Time.realtimeSinceStartup;
 		TurnActive = true;
 		FindObjectOfType<PaintController> ().Clear ();
 	}
 
+	void SpawnSymbol()
+	{
+		int index = UnityEngine.Random.Range(0, Symbols.Count);
+		if (CurrentSymbol != null)
+		{
+			GameObject.Destroy(CurrentSymbol);
+		}
+		CurrentSymbol = GameObject.Instantiate (Symbols [index]) as GameObject;
+		CurrentSymbol.transform.parent = transform;
+	}
 		
 	void SpawnAnimals()
 	{
@@ -140,7 +151,6 @@ public class GameController : MonoBehaviour
 
 	void CheckScore()
 	{
-		int samplesPerSegment = 12;
 		int totalSamples = 0;
 		var symbol = GameObject.FindObjectOfType<Symbol> ();
 		BloodDrop[] bloodDropObjects = GameObject.FindObjectsOfType<BloodDrop> ();
@@ -152,6 +162,10 @@ public class GameController : MonoBehaviour
 		for (int i = 0; i < symbol.Points.Count; i++) {
 			Vector2 a = (Vector2)symbol.Points [i].transform.position;
 			Vector2 b = (Vector2)symbol.Points [(i + 1) % symbol.Points.Count].transform.position;
+		
+			int samplesPerSegment =  Mathf.Max (3, (int)((b - a).magnitude / 10.0f));
+
+		
 			for (int j = 0; j < samplesPerSegment; j++) 
 			{
 				Vector2 point = Vector2.Lerp (a, b, (float)j / samplesPerSegment);

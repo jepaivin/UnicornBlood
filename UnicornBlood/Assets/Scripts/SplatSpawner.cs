@@ -44,6 +44,8 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	{
 		if (used)
 			return;
+		if (!FindObjectOfType<GameController> ().TurnActive)
+			return;
 
 		used = true;
 		faded = false;
