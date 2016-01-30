@@ -64,6 +64,15 @@ public class PaintController : MonoBehaviour
 		}
 		previousMousePosition = mousePosition;
 	}
+	
+	public void Clear()
+	{
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			GameObject.Destroy(transform.GetChild(i).gameObject);
+		}
+	}
+
 	// Update is called once per frame
 	void Update () 
     {

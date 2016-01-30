@@ -66,6 +66,8 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	public void OnDrag()
 	{
 		var delta = (Input.mousePosition - lastPosition)*0.02f;
+		if (CurrentSplat == null)
+			return;
 		CurrentSplat.transform.position = new Vector3 (CurrentSplat.transform.position.x + delta.x,
 		                                              CurrentSplat.transform.position.y + delta.y,
 		                                              CurrentSplat.transform.position.z);
@@ -75,14 +77,6 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 		{
 			faded = true;
 			StartCoroutine(FadeOut());
-		}
-	}
-
-	public void Spawn()
-	{
-		for (int i = 0; i < BloodAmount; i++)
-		{
-			
 		}
 	}
 }

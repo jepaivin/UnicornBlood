@@ -11,6 +11,12 @@ public class GameController : MonoBehaviour
 	public List<GameObject> Animals;
 	public Text PromptText;
 	public Text ScoreText;
+	public Text TimeText;
+
+
+	private float TurnTime = 15;
+	private float TurnStartTime;
+	private bool TurnActive = false;
 
 	public GameObject CheckMarkPrefab;
 	private List<GameObject> AnimalInstances = new List<GameObject>();
@@ -31,9 +37,18 @@ public class GameController : MonoBehaviour
 		Score = 0.0f;
 		ShowScore (Score);
 
-		SpawnAnimals ();
+		StartNewTurn ();
 	}
 
+	void StartNewTurn()
+	{
+		SpawnAnimals ();
+		TurnStartTime = Time.realtimeSinceStartup;
+		TurnActive = true;
+		FindObjectOfType<PaintController> ().Clear ();
+	}
+
+		
 	void SpawnAnimals()
 	{
 		var canvas = GetComponentInChildren<Canvas> ();
@@ -103,6 +118,22 @@ public class GameController : MonoBehaviour
 		if (Input.GetKeyUp (KeyCode.C)) 
 		{
 			CheckScore();
+		}
+
+		if (TurnActive) {
+			float timeLeft = (TurnStartTime + TurnTime) - Time.realtimeSinceStartup;
+			if (timeLeft < 0)
+			{
+				timeLeft = 0;
+				TurnActive = false;
+				CheckScore ();
+
+			}
+			TimeText.text = string.Format("00:{0:D2}", (int)timeLeft);
+		}
+		else
+		{
+			TimeText.text = "";
 		}
 
 	}
@@ -185,6 +216,6 @@ public class GameController : MonoBehaviour
 				yield return null;
         }
         
-        
+		StartNewTurn ();
     }
 }
