@@ -18,9 +18,10 @@ public class GameManager : MonoBehaviour
 	{
 		game.SetActive (false);
 		menu.SetActive (true);
-	
+
 	}
 	
+
 	// Update is called once per frame
 	void Update () {
 	
@@ -31,6 +32,8 @@ public class GameManager : MonoBehaviour
 		menu.SetActive (false);
 
 		game.SetActive (true);
+		game.GetComponent<GameController> ().StartGame ();
+
 	}
 
 	public void EndGame()

@@ -88,11 +88,12 @@ public class PaintController : MonoBehaviour
 		if (Input.GetMouseButton (0) && CurrentDragDrops != null)
 		{
 			Vector3 scroll = (mousePosition - previousMousePosition)*DragSpeed;
+			float scrollMagnitude = scroll.magnitude;
+			Vector3 scrollDirection = scroll.normalized;
 			for(int i = 0; i < CurrentDragDrops.Count; i++)
 			{
 				var drop = CurrentDragDrops[i];
-				Vector3 moveVector = scroll * CurrentDragWeights[i];
-				drop.Move(moveVector);
+				drop.Move(scrollDirection, scrollMagnitude * CurrentDragWeights[i]);
 			}
 			previousMousePosition = mousePosition;
 			if (ContinuousCapture && !PlacingSplat)

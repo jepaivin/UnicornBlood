@@ -8,7 +8,6 @@ public class BloodDrop : MonoBehaviour {
 	public float MoveMultiplier = 1;
 	public bool TrailMode = false;
 
-
 	private SpriteRenderer spriteRenderer;
 	private Color startColor;
 	private Color endColor;
@@ -25,16 +24,15 @@ public class BloodDrop : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
 	}
 
-	public void Move(Vector3 v)
+	public void Move(Vector3 dir, float mag)
 	{
-		float dist = Mathf.Min (v.magnitude * MoveMultiplier, MoveLeft);
+		float dist = Mathf.Min (mag * MoveMultiplier, MoveLeft);
 
 		if (dist < MoveLeft) 
 		{
-			transform.position = transform.position + v.normalized * dist;
+			transform.position = transform.position + dir * dist;
 		}
 		MoveLeft -= dist;
 

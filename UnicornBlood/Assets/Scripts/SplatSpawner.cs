@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using System.Collections;
 
 
-public class SplatSpawner : MonoBehaviour, IDragHandler
+public class SplatSpawner : MonoBehaviour//, IDragHandler
 {
 	public int BloodAmount;
 	public GameObject SplatPrefab;
@@ -38,7 +38,7 @@ public class SplatSpawner : MonoBehaviour, IDragHandler
 		CurrentSplat = null;
 	}
 
-	public void OnDrag(PointerEventData data)
+	public void OnDrag()
 	{
 		var delta = (Input.mousePosition - lastPosition)*0.02f;
 		CurrentSplat.transform.position = new Vector3 (CurrentSplat.transform.position.x + delta.x,
