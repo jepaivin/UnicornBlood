@@ -46,32 +46,33 @@ public class ScorePanelController : MonoBehaviour
 			Economy.text = "Economy Bonus: " + (int)(economy * 100) + " %";
 		}
 		yield return new WaitForSeconds (1.0f);
+		float score = completion + economy;
 
-		if (completion > 0.9f) {
+		if (score > 0.9f) {
 			Gods.text = "Gods are ecstatic";
 		} else
-		if (completion > 0.8f) {
+		if (score > 0.8f) {
 			Gods.text = "Gods are happy";
 		} else
-		if (completion > 0.7f) {
+		if (score > 0.7f) {
 			Gods.text = "Gods are pleased";
 		} else
-		if (completion > 0.6f) {
+		if (score > 0.6f) {
 			Gods.text = "Gods are satisfied";
 		} else
-		if (completion > 0.5f) {
+		if (score > 0.5f) {
 			Gods.text = "Gods are contended";
 		} else
-		if (completion > 0.4f) {
+		if (score > 0.4f) {
 			Gods.text = "Gods are displeased - Life lost!";
 		} else
-		if (completion > 0.3f) {
+		if (score > 0.3f) {
 			Gods.text = "Gods are annoyed - Life lost!";
 		} else
-		if (completion > 0.2f) {
+		if (score > 0.2f) {
 			Gods.text = "Gods are angry - Life lost!";
 		} else
-		if (completion > 0.1f) {
+		if (score > 0.1f) {
 			Gods.text = "Gods are enraged - Life lost!";
 		} else
 		{
@@ -84,8 +85,7 @@ public class ScorePanelController : MonoBehaviour
 		yield return new WaitForSeconds (1.0f);
 		gameObject.SetActive (false);
 
-		float totalScore = completion + economy;
-		if (totalScore < 0.5f) {
+		if (score <= 0.5f) {
 		// Lost life
 			GameObject.FindObjectOfType<GameController>().LoseLife();
 		}

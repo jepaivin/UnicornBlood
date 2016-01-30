@@ -78,7 +78,7 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 
 	public void OnDrag()
 	{
-		float mult = 0.01f;
+		float mult = 0.02f;
 		if (!Application.isEditor)
 			mult = 0.005f;
 

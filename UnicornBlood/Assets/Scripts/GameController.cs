@@ -223,7 +223,7 @@ public class GameController : MonoBehaviour
 		}
 		Debug.Log ("Checking " + bloodDrops.Length + " drops vs " + checkPoints.Count + " checkpoints");
         
-        float THRESHOLD = 0.15f;
+        const float THRESHOLD = 0.25f;
 		int checkPointsFilled = 0;
 		bool found = false;
 		for (int j = 0; j < checkPoints.Count; j++)
@@ -231,10 +231,8 @@ public class GameController : MonoBehaviour
 			found = false;
 			for (int di = 0; di < bloodDrops.Length; di++)
 			{
-				if (Vector2.SqrMagnitude(bloodDrops[di] - checkPoints[j]) < THRESHOLD)
+				if (Vector2.SqrMagnitude(bloodDrops[di] - checkPoints[j]) < (THRESHOLD*THRESHOLD))
 				{
-//					bloodDropObjects[i].GetComponent<SpriteRenderer>().color = Color.white;
-//					bloodDropObjects[i].GetComponent<SpriteRenderer>().sortingOrder = 4000;
 					found = true;
 					break;
 				}
@@ -244,7 +242,6 @@ public class GameController : MonoBehaviour
 		}
 		StopAllCoroutines ();
 		float percentage = (checkPointsFilled / (float)checkPoints.Count * 100.0f);
-		//ShowPrompt ((int)percentage + " %");// COMPLETE");
         
         StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
 		float totalScore = percentage / 100.0f + (4 - AnimalsUsed) * 0.1f;
@@ -252,7 +249,7 @@ public class GameController : MonoBehaviour
 		Score += percentage / 100.0f;
 
 		ShowScore (Score);
-		ScorePanel.ShowScore (percentage/100.0f, 0.1f, (4 - AnimalsUsed) * 0.1f, (int)(totalScore*365.0f));
+		ScorePanel.ShowScore (percentage/100.0f, 0.1f, (4 - AnimalsUsed) * 0.05f, (int)(totalScore*365.0f));
 
 	}
 
