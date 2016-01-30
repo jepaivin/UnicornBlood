@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour
 		{
 			GameObject.Destroy(go);
 		}
+
 		AnimalInstances.Clear ();
 
 		for (int i = 0; i < 4; i++)
