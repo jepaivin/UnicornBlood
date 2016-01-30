@@ -195,7 +195,7 @@ public class GameController : MonoBehaviour
 		}
 		StopAllCoroutines ();
 		float percentage = (checkPointsFilled / (float)checkPoints.Count * 100.0f);
-		ShowPrompt (percentage + " % COMPLETE");
+		ShowPrompt ((int)percentage + " % COMPLETE");
         
         StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
 		Score += percentage / 100.0f;
