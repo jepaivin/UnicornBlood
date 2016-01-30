@@ -13,6 +13,8 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	private bool used = false;
 	private bool faded = false;
 	private Vector3 startPosition;
+	private Vector3 initialRotation;
+	private float dragStartTime;
 
 	// Use this for initialization
 	void Start () {
@@ -53,18 +55,25 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 		faded = false;
 		GameObject.FindObjectOfType<PaintController> ().PlacingSplat = true;
 		CurrentSplat = GameObject.Instantiate (SplatPrefab) as GameObject;
+		CurrentSplat.GetComponent<BloodDropContainer> ().Rotating = true;
+		initialRotation = CurrentSplat.transform.rotation.eulerAngles;
+		dragStartTime = Time.realtimeSinceStartup;
 		CurrentSplat.transform.parent = GameObject.Find ("BloodContainer").transform;
 		CurrentSplat.transform.position = transform.position;
 		lastPosition = Input.mousePosition;
 		startPosition = Input.mousePosition;
+
 	}
 
 	public void OnEndDrag()
 	{
 	//	GameObject.Destroy (CurrentSplat);
 		GameObject.FindObjectOfType<PaintController> ().PlacingSplat = false;
+		if (CurrentSplat != null) {
+			CurrentSplat.GetComponent<BloodDropContainer> ().Rotating = false;
 
-		CurrentSplat = null;
+			CurrentSplat = null;
+		}
 	}
 
 	public void OnDrag()
@@ -72,6 +81,7 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 		float mult = 0.01f;
 		if (!Application.isEditor)
 			mult = 0.005f;
+
 
 		var delta = (Input.mousePosition - lastPosition) * mult;
 		if (CurrentSplat == null)

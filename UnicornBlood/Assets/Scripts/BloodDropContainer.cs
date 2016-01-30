@@ -5,6 +5,8 @@ public class BloodDropContainer : MonoBehaviour
 {
 
 	public int Copies = 10;
+	public bool Rotating = false;
+	private float rotation = 0;
 	// Use this for initializationsa
 
 	void Start () 
@@ -29,6 +31,10 @@ public class BloodDropContainer : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
-	
+	if (Rotating) 
+		{
+			rotation += Time.deltaTime;
+			transform.rotation = Quaternion.Euler(0,0, rotation*100.0f);
+		}
 	}
 }
