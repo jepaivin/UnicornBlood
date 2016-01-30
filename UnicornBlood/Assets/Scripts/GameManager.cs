@@ -5,6 +5,8 @@ public class GameManager : MonoBehaviour
 {
 	public GameObject menu;
 	public GameObject game;
+	public GameObject gameOver;
+
 
 	public static GameManager instance;
 
@@ -17,8 +19,9 @@ public class GameManager : MonoBehaviour
 	void Start () 
 	{
 		game.SetActive (false);
-		menu.SetActive (true);
+		gameOver.SetActive (false);
 
+		menu.SetActive (true);
 	}
 	
 
@@ -33,8 +36,8 @@ public class GameManager : MonoBehaviour
 
 		game.SetActive (true);
 		game.GetComponent<GameController> ().StartGame ();
-
 	}
+
 	public void RestartGame()
 	{
 		game.SetActive (false);
@@ -44,9 +47,19 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	public void EndGame()
+	public void EndGame(float score)
+	{
+		Debug.Log ("END GAME");
+		game.SetActive (false);
+		gameOver.SetActive (true);
+		gameOver.GetComponent<GameOverController> ().ShowScore (score);
+	}
+
+	public void GoToMenu()
 	{
 		game.SetActive (false);
+		gameOver.SetActive (false);
 		menu.SetActive (true);
+
 	}
 }

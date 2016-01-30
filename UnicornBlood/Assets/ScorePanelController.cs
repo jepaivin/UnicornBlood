@@ -83,5 +83,11 @@ public class ScorePanelController : MonoBehaviour
 
 		yield return new WaitForSeconds (1.0f);
 		gameObject.SetActive (false);
+
+		float totalScore = completion + economy;
+		if (totalScore < 0.5f) {
+		// Lost life
+			GameObject.FindObjectOfType<GameController>().LoseLife();
+		}
 	}
 }

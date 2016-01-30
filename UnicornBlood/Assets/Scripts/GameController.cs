@@ -10,15 +10,18 @@ public class GameController : MonoBehaviour
 	public List<GameObject> Symbols;
 	public List<GameObject> Animals;
 	public Text PromptText;
-	public Text ScoreText;
+	public Text LivesText;
+
 	public Text TimeText;
 	public int AnimalsUsed = 0;
+	public int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
 
 	private float TurnTime = 15;
 	private float TurnStartTime;
 	public bool TurnActive = false;
+
 
 	public GameObject CheckMarkPrefab;
 	private List<GameObject> AnimalInstances = new List<GameObject>();
@@ -27,6 +30,7 @@ public class GameController : MonoBehaviour
 
 	public List<String> FunFacts = new List<String>();
 	public GameObject funFactText;
+
 
 	// Use this for initialization
 	
@@ -141,7 +145,7 @@ public class GameController : MonoBehaviour
 	{
 		int year = DateTime.Now.Year;
 		int armageddon = (year + Mathf.FloorToInt (score));
-		ScoreText.text = "World ends in " + armageddon;
+	//	ScoreText.text = "World ends in " + armageddon;
 	}
 
 	// Update is called once per frame
@@ -157,7 +161,14 @@ public class GameController : MonoBehaviour
 		{
 			CheckScore();
 		}
-
+		if (Input.GetKeyUp (KeyCode.E)) 
+		{
+			TurnStartTime = Time.realtimeSinceStartup - TurnTime;
+		}
+		if (Input.GetKeyUp (KeyCode.L)) 
+		{
+			LoseLife();
+		}
 		if (TurnActive) {
 			float timeLeft = (TurnStartTime + TurnTime) - Time.realtimeSinceStartup;
 			if (timeLeft < 0)
@@ -233,6 +244,23 @@ public class GameController : MonoBehaviour
 
 	}
 
+	public void LoseLife()
+	{
+		LivesLeft--;
+		LivesText.text = "";
+		for (int i = 0; i < LivesLeft; i++)
+			LivesText.text += "<3 ";
+		if (LivesLeft == 0) 
+		{
+			ShowGameOver();
+//			StartCoroutine(ShowGameOver());
+		}
+	}
+	private void ShowGameOver()
+	{
+		GameManager.instance.EndGame (Score);
+
+	}
 	private IEnumerator ShowResult(List<Vector2> pts, List<bool> status)
 	{
 			List<GameObject> created = new List<GameObject> ();
