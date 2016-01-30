@@ -19,7 +19,11 @@ public class BloodDropContainer : MonoBehaviour
 			{
 				var copy = GameObject.Instantiate(drops[j].gameObject) as GameObject;
 				copy.transform.parent = drops[j].gameObject.transform.parent;
-				copy.transform.position = drops[j].gameObject.transform.position;
+
+				float CopySpread = 0.1f;
+				Vector3 rndDirection = new Vector3( Random.Range(-CopySpread, CopySpread), Random.Range(-CopySpread, CopySpread), 0.0f );
+
+				copy.transform.position = drops[j].gameObject.transform.position + rndDirection;
 
 				var drop =  copy.GetComponent<BloodDrop>();
 				drop.MoveMultiplier = multiplier;
