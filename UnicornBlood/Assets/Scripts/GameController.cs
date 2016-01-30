@@ -3,22 +3,57 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
 using System.Linq;
+using System;
 
 public class GameController : MonoBehaviour 
 {
 	public List<GameObject> Symbols;
 	public List<GameObject> Animals;
 	public Text PromptText;
+	public Text ScoreText;
+
 	public GameObject CheckMarkPrefab;
+	private List<GameObject> AnimalInstances = new List<GameObject>();
+
+	private float Score = 0.0f;
+
+
 	// Use this for initialization
 	
 	void Awake()
 	{
+
 	}
 
 	public void StartGame () 
 	{
 		ShowPrompt("GAME STARTING");
+		Score = 0.0f;
+		ShowScore (Score);
+
+		SpawnAnimals ();
+	}
+
+	void SpawnAnimals()
+	{
+		var canvas = GetComponentInChildren<Canvas> ();
+		foreach(var go in AnimalInstances)
+		{
+			GameObject.Destroy(go);
+		}
+		AnimalInstances.Clear ();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int index = UnityEngine.Random.Range(0, Animals.Count);
+
+			var animal = GameObject.Instantiate(Animals[index]) as GameObject;
+			animal.transform.parent = canvas.transform;
+			animal.GetComponent<RectTransform>().localPosition = new Vector3(i*130-200,-300,0);
+			animal.GetComponent<RectTransform>().localScale = Vector3.one;
+
+			AnimalInstances.Add(animal);
+		}
 	}
 
 	void ShowPrompt(string text)
@@ -26,6 +61,7 @@ public class GameController : MonoBehaviour
 		StopAllCoroutines ();
 		StartCoroutine (ShowPromptAsync (text));
 	}
+
 	IEnumerator ShowPromptAsync(string text)
 	{
 		Debug.Log ("Done");
@@ -45,6 +81,13 @@ public class GameController : MonoBehaviour
 			yield return null;
 		}
 		PromptText.text = "";
+	}
+
+	void ShowScore(float score)
+	{
+		int year = DateTime.Now.Year;
+		int armageddon = (year + Mathf.FloorToInt (score));
+		ScoreText.text = "World ends in " + armageddon;
 	}
 
 	// Update is called once per frame
@@ -109,6 +152,9 @@ public class GameController : MonoBehaviour
 		ShowPrompt (percentage + " % COMPLETE");
         
         StartCoroutine (ShowResult (checkPoints, CheckPointStatus));
+		Score += percentage / 100.0f;
+		ShowScore (Score);
+
 	}
 
 	private IEnumerator ShowResult(List<Vector2> pts, List<bool> status)

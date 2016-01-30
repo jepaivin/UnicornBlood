@@ -35,6 +35,14 @@ public class GameManager : MonoBehaviour
 		game.GetComponent<GameController> ().StartGame ();
 
 	}
+	public void RestartGame()
+	{
+		game.SetActive (false);
+		game.SetActive (true);
+
+		game.GetComponent<GameController> ().StartGame ();
+
+	}
 
 	public void EndGame()
 	{
