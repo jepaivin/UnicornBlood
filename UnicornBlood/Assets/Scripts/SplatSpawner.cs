@@ -65,6 +65,8 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 		CurrentSplat.transform.position = transform.position;
 		lastPosition = Input.mousePosition;
 		startPosition = Input.mousePosition;
+		lastPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+
 
 	}
 
@@ -81,18 +83,17 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 
 	public void OnDrag()
 	{
-		float mult = 0.02f;
-		if (!Application.isEditor)
-			mult = 0.005f;
+		Vector3 pos = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
+		var delta = (pos - lastPosition);
 
-		var delta = (Input.mousePosition - lastPosition) * mult;
 		if (CurrentSplat == null)
 			return;
+
 		CurrentSplat.transform.position = new Vector3 (CurrentSplat.transform.position.x + delta.x,
 		                                              CurrentSplat.transform.position.y + delta.y,
 		                                              CurrentSplat.transform.position.z);
-		lastPosition = Input.mousePosition;
+		lastPosition = pos;
 
 		if (!faded && (Input.mousePosition - startPosition).magnitude > 0.2f)
 		{

@@ -176,24 +176,25 @@ public class GameController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
-		if (Input.GetKeyUp (KeyCode.Space)) 
+		if (Application.isEditor)
 		{
-			Application.LoadLevel(Application.loadedLevelName);
-			return;
+			if (Input.GetKeyUp (KeyCode.Space))
+			{
+				Application.LoadLevel (Application.loadedLevelName);
+				return;
+			}
+
+			if (Input.GetKeyUp (KeyCode.C)) {
+				CheckScore ();
+			}
+			if (Input.GetKeyUp (KeyCode.E)) {
+				TurnStartTime = Time.realtimeSinceStartup - TurnTime;
+			}
+			if (Input.GetKeyUp (KeyCode.L)) {
+				LoseLife ();
+			}
 		}
-		if (Input.GetKeyUp (KeyCode.C)) 
-		{
-			CheckScore();
-		}
-		if (Input.GetKeyUp (KeyCode.E)) 
-		{
-			TurnStartTime = Time.realtimeSinceStartup - TurnTime;
-		}
-		if (Input.GetKeyUp (KeyCode.L)) 
-		{
-			LoseLife();
-		}
+
 		if (TurnActive) {
 			float timeLeft = (TurnStartTime + TurnTime) - Time.realtimeSinceStartup;
 			if (timeLeft < 0)
