@@ -60,19 +60,19 @@ public class ScorePanelController : MonoBehaviour
 		if (score > 0.6f) {
 			Gods.text = "Gods are satisfied";
 		} else
-		if (score > 0.5f) {
+/*		if (score > 0.5f) {
 			Gods.text = "Gods are contended";
-		} else
-		if (score > 0.4f) {
+		} else*/
+		if (score > 0.5f) {
 			Gods.text = "Gods are displeased - Life lost!";
 		} else
-		if (score > 0.3f) {
+		if (score > 0.4f) {
 			Gods.text = "Gods are annoyed - Life lost!";
 		} else
-		if (score > 0.2f) {
+		if (score > 0.3f) {
 			Gods.text = "Gods are angry - Life lost!";
 		} else
-		if (score > 0.1f) {
+		if (score > 0.2f) {
 			Gods.text = "Gods are enraged - Life lost!";
 		} else
 		{
@@ -85,7 +85,7 @@ public class ScorePanelController : MonoBehaviour
 		yield return new WaitForSeconds (1.0f);
 		gameObject.SetActive (false);
 
-		if (score <= 0.5f) {
+		if (score <= 0.6f) {
 		// Lost life
 			GameObject.FindObjectOfType<GameController>().LoseLife();
 		}
