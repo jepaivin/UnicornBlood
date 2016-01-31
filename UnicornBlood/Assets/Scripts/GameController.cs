@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
 	public int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
-	private float InitialTurnTime = 10;
+	private float InitialTurnTime = 30;
 	private float MinTurnTime = 10;
 	private float TurnTimeDecreesSpeed = 2;
 	private int GameRound = 0;
