@@ -17,8 +17,10 @@ public class GameController : MonoBehaviour
 	public int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
-	private float InitialTurnTime = 15;
+	private float InitialTurnTime = 30;
 	private float MinTurnTime = 5;
+	private float TurnTimeDecreesSpeed = 2;
+	private int GameRound = 0;
 
 	private float TurnTime = 15;
 	private float TurnStartTime;
@@ -49,6 +51,7 @@ public class GameController : MonoBehaviour
 		ShowScore (Score);
 		ScorePanel.gameObject.SetActive (false);
 		TurnTime = InitialTurnTime  + 1; // decrease per turn, hence +1
+		GameRound = 0;
 		StartNewTurn ();
 	}
 
@@ -63,8 +66,9 @@ public class GameController : MonoBehaviour
 		while (ScorePanel.gameObject.activeSelf) {
 			yield return null;
 		}
+		GameRound ++;
 		if (TurnTime > MinTurnTime) {
-			TurnTime--;
+			TurnTime -= TurnTimeDecreesSpeed;
 		}
 		ClearAnimals ();
 		FindObjectOfType<PaintController> ().Clear ();
@@ -110,9 +114,23 @@ public class GameController : MonoBehaviour
 	{
 		var canvas = GetComponentInChildren<Canvas> ();
 
-		int index = UnityEngine.Random.Range(0, Animals.Count);
+		int indexi = 0;
+		bool goodToGo = false;
 
-		var animal = GameObject.Instantiate(Animals[index]) as GameObject;
+		while (!goodToGo)
+		{
+			indexi = UnityEngine.Random.Range(0, Animals.Count);
+
+			if (Animals[indexi].GetComponent<SplatSpawner>().introDifficulty <= GameRound && Animals[indexi].GetComponent<SplatSpawner>().exitDifficulty >= GameRound)
+			{
+				goodToGo = true;
+			}
+
+		}
+
+		var animal = GameObject.Instantiate(Animals[indexi]) as GameObject;
+
+
 		animal.transform.parent = canvas.transform;
 		animal.GetComponent<RectTransform>().localPosition = new Vector3(i*130-200,-300,0);
 		animal.GetComponent<RectTransform>().localScale = Vector3.one;

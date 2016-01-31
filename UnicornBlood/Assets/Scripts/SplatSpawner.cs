@@ -8,6 +8,9 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 	public int BloodAmount;
 	public GameObject SplatPrefab;
 
+	public int introDifficulty = 1;
+	public int exitDifficulty = 1;
+
 	private GameObject CurrentSplat;
 	private Vector3 lastPosition;
 	private bool used = false;
