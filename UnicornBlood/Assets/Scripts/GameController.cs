@@ -17,8 +17,8 @@ public class GameController : MonoBehaviour
 	public int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
-	private float InitialTurnTime = 30;
-	private float MinTurnTime = 5;
+	private float InitialTurnTime = 10;
+	private float MinTurnTime = 10;
 	private float TurnTimeDecreesSpeed = 2;
 	private int GameRound = 0;
 
@@ -230,7 +230,7 @@ public class GameController : MonoBehaviour
 				Vector2 a = (Vector2)poly.Points[j].transform.position;
 				Vector2 b = (Vector2)poly.Points[j+1].transform.position;
 			
-				int samplesPerSegment =  Mathf.Max (2, (int)((b - a).magnitude*2.0f));
+				int samplesPerSegment =  Mathf.Max (2, (int)((b - a).magnitude*4.0f));
 			
 				for (int k = 0; k < samplesPerSegment; k++) 
 				{
@@ -242,7 +242,7 @@ public class GameController : MonoBehaviour
 		}
 		Debug.Log ("Checking " + bloodDrops.Length + " drops vs " + checkPoints.Count + " checkpoints");
         
-        const float THRESHOLD = 0.25f;
+        const float THRESHOLD = 0.20f;
 		int checkPointsFilled = 0;
 		bool found = false;
 		for (int j = 0; j < checkPoints.Count; j++)

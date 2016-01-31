@@ -6,8 +6,10 @@ using System;
 public class GameOverController : MonoBehaviour
 {
 	public Text ScoreText;
+	public Text ScoreText2;
+
 	private static string[] MONTHS = {"Jan","Feb","Mar", "Apr","May","Jun", "Jul","Aug","Sep","Oct","Nov","Dec"};
-	public void ShowScore(float score)
+	public void ShowScore(float score, float highScore)
 	{
 		int year = DateTime.Now.Year + Mathf.FloorToInt (score);
 		int month = DateTime.Now.Month + Mathf.FloorToInt ((score - Mathf.FloorToInt (score)) * 12);
@@ -16,7 +18,11 @@ public class GameOverController : MonoBehaviour
 			year++;
 			month-=12;
 		}
-		ScoreText.text = "Armageddon pushed back to " + MONTHS[month] + " " + year;
+		
+		if (score > highScore)
+		{
+			ScoreText2.text = ScoreText.text;
+		}
 
 	}
 

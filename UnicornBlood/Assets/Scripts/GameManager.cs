@@ -7,7 +7,9 @@ public class GameManager : MonoBehaviour
 	public GameObject menu;
 	public GameObject game;
 	public GameObject gameOver;
+	public AudioSource audioSource;
 
+	private float highScore = 0;
 
 	public static GameManager instance;
 
@@ -21,6 +23,8 @@ public class GameManager : MonoBehaviour
 	{
 		game.SetActive (false);
 		gameOver.SetActive (false);
+
+		audioSource.Play ();
 
 		menu.SetActive (true);
 		
@@ -58,7 +62,16 @@ public class GameManager : MonoBehaviour
 		Debug.Log ("END GAME");
 		game.SetActive (false);
 		gameOver.SetActive (true);
-		gameOver.GetComponent<GameOverController> ().ShowScore (score);
+
+		audioSource.Play ();
+
+		Debug.Log ("Score :"+score+ " vs. "+ highScore);
+
+		gameOver.GetComponent<GameOverController> ().ShowScore (score, highScore);
+		if (score > highScore)
+		{
+			highScore = score;
+		}
 	}
 
 	public void GoToMenu()
