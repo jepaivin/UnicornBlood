@@ -67,7 +67,7 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 		startPosition = Input.mousePosition;
 		lastPosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
 
-
+		AudioManager.Instance.PlaySound(SoundEffects.Cut, 0f, 1f);
 	}
 
 	public void OnEndDrag()
@@ -79,6 +79,7 @@ public class SplatSpawner : MonoBehaviour//, IDragHandler
 
 			CurrentSplat = null;
 		}
+		AudioManager.Instance.PlaySound(SoundEffects.Sacrifice, 0f, 1f);
 	}
 
 	public void OnDrag()

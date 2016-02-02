@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
 		game.SetActive (true);
 		game.GetComponent<GameController> ().StartGame ();
+
+		AudioManager.Instance.SetGameStarted();
 	}
 
 	public void RestartGame()

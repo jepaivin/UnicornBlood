@@ -60,6 +60,8 @@ public class PaintController : MonoBehaviour
 			
 		}
 		previousMousePosition = mousePosition;
+
+		AudioManager.Instance.PlaySound(SoundEffects.Splatter, 0f, 0.5f);
 	}
 
 	public void Clear()
