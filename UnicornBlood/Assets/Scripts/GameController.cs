@@ -14,12 +14,13 @@ public class GameController : MonoBehaviour
 
 	public Text TimeText;
 	public int AnimalsUsed = 0;
-	public int LivesLeft = 3;
+	public int LivesLeftFull = 3;
+	private int LivesLeft = 3;
 
 	public ScorePanelController ScorePanel;
-	private float InitialTurnTime = 30;
-	private float MinTurnTime = 10;
-	private float TurnTimeDecreesSpeed = 2;
+	private float InitialTurnTime = 20;
+	private float MinTurnTime = 5;
+	private float TurnTimeDecreesSpeed = 1;
 	private int GameRound = 0;
 
 	private float TurnTime = 15;
@@ -48,6 +49,7 @@ public class GameController : MonoBehaviour
 	{
 		ShowPrompt("GAME STARTING");
 		Score = 0.0f;
+		LivesLeft = LivesLeftFull;
 		ShowScore (Score);
 		ScorePanel.gameObject.SetActive (false);
 		TurnTime = InitialTurnTime  + 1; // decrease per turn, hence +1
